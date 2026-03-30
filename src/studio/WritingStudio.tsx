@@ -133,6 +133,17 @@ export function WritingStudio() {
     }
     return found;
   }, [findTerm, activeDoc.content]);
+  const canRenderInlineGhost = useMemo(() => {
+    if (!ghostText || activeDoc.selection.start !== activeDoc.selection.end) {
+      return false;
+    }
+    const caret = activeDoc.selection.start;
+    const nextNewline = activeDoc.content.indexOf("\n", caret);
+    const lineEnd = nextNewline === -1 ? activeDoc.content.length : nextNewline;
+    const rightSideOfCaret = activeDoc.content.slice(caret, lineEnd);
+    // Avoid visual overlap: only show ghost when caret is at line end.
+    return rightSideOfCaret.length === 0;
+  }, [activeDoc.content, activeDoc.selection.end, activeDoc.selection.start, ghostText]);
 
   const actions = useMemo(
     () => [
@@ -398,7 +409,7 @@ export function WritingStudio() {
             )}
             <div className="editor-stack">
               <pre className="syntax-layer" aria-hidden dangerouslySetInnerHTML={{ __html: highlightMarkdown(activeDoc.content || " ") }} />
-              {ghostText && activeDoc.selection.start === activeDoc.selection.end && (
+              {canRenderInlineGhost && (
                 <pre className="ghost-inline-layer" aria-hidden>
                   <span className="ghost-hidden-text">{activeDoc.content.slice(0, activeDoc.selection.start)}</span>
                   <span className="ghost-inline">{ghostText}</span>
