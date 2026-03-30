@@ -1,0 +1,366 @@
+:root {
+  --color-bg: #f7f8fb;
+  --color-panel: #ffffff;
+  --color-panel-2: #f1f3f9;
+  --color-text: #1c2130;
+  --color-muted: #6b7280;
+  --color-border: #dce0eb;
+  --color-accent: #4f46e5;
+  --color-heading: #2563eb;
+  --color-code: #0f766e;
+  --color-quote: #9333ea;
+  --shadow-sm: 0 2px 12px rgba(18, 28, 45, 0.07);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --radius: 10px;
+  --font-body: Inter, "Segoe UI", sans-serif;
+  --trans: 180ms ease;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0d111a;
+  --color-panel: #151b28;
+  --color-panel-2: #1b2434;
+  --color-text: #e4ebff;
+  --color-muted: #9ca5be;
+  --color-border: #2b3548;
+  --color-accent: #818cf8;
+  --color-heading: #93c5fd;
+  --color-code: #5eead4;
+  --color-quote: #d8b4fe;
+}
+
+[data-theme="sepia"] {
+  --color-bg: #f3e7d1;
+  --color-panel: #fcf4e6;
+  --color-panel-2: #f2e6d1;
+  --color-text: #4e3b2a;
+  --color-muted: #7b624e;
+  --color-border: #d2c0a7;
+  --color-accent: #8b5e34;
+  --color-heading: #9a3412;
+  --color-code: #0f766e;
+  --color-quote: #7c3aed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.studio {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  transition: background var(--trans), color var(--trans);
+}
+
+.tabs,
+.toolbar,
+.find-panel,
+.suggestion-banner {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-panel-2);
+  padding: 2px 8px;
+  transition: transform var(--trans), background var(--trans);
+}
+
+.tab.active {
+  background: var(--color-panel);
+  transform: translateY(-1px);
+}
+
+.tab input {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 120px;
+}
+
+.dirty-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.close {
+  cursor: pointer;
+  color: var(--color-muted);
+}
+
+.icon-btn,
+.toolbar button,
+.find-panel button {
+  border: 1px solid var(--color-border);
+  background: var(--color-panel-2);
+  color: inherit;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background var(--trans);
+}
+
+.icon-btn:hover,
+.toolbar button:hover,
+.find-panel button:hover {
+  background: var(--color-panel);
+}
+
+.suggestion-banner {
+  justify-content: space-between;
+  gap: var(--space-3);
+  color: var(--color-text);
+  border-style: dashed;
+}
+
+.suggestion-hint {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.pane-wrap {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.editor-pane,
+.preview-pane {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.divider {
+  width: 8px;
+  cursor: col-resize;
+  margin: 0 var(--space-2);
+  border-radius: 999px;
+  background: var(--color-border);
+  transition: background var(--trans);
+}
+
+.divider:hover {
+  background: var(--color-accent);
+}
+
+.editor-shell {
+  display: flex;
+  height: 100%;
+}
+
+.lines {
+  width: 48px;
+  padding: 10px 6px;
+  text-align: right;
+  color: var(--color-muted);
+  border-right: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.editor-stack {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.editor-stack textarea,
+.editor-stack .syntax-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  margin: 0;
+  border: 0;
+  resize: none;
+  overflow: auto;
+  line-height: 1.6;
+  font: 500 15px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  tab-size: 2;
+}
+
+.editor-stack textarea {
+  background: transparent;
+  color: transparent;
+  caret-color: var(--color-text);
+  z-index: 2;
+  outline: none;
+}
+
+.editor-stack .syntax-layer {
+  z-index: 1;
+  pointer-events: none;
+  color: var(--color-text);
+}
+
+.md-heading {
+  color: var(--color-heading);
+  font-weight: 700;
+}
+
+.md-strong {
+  font-weight: 700;
+}
+
+.md-em {
+  font-style: italic;
+}
+
+.md-code {
+  color: var(--color-code);
+}
+
+.md-list {
+  color: var(--color-accent);
+}
+
+.md-quote {
+  color: var(--color-quote);
+}
+
+.ghost {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  max-width: calc(100% - 24px);
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  background: color-mix(in srgb, var(--color-panel) 80%, transparent);
+  border-radius: 6px;
+  padding: 4px 6px;
+  z-index: 3;
+  animation: fade-in 180ms ease;
+  pointer-events: none;
+}
+
+.preview-pane {
+  padding: var(--space-4);
+  overflow: auto;
+}
+
+.preview-pane h1,
+.preview-pane h2,
+.preview-pane h3 {
+  color: var(--color-heading);
+}
+
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: start center;
+  padding-top: 80px;
+}
+
+.palette {
+  width: min(640px, 90vw);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: slide-in 150ms ease;
+}
+
+.palette input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  color: inherit;
+  padding: 12px;
+  outline: none;
+}
+
+.palette ul {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+  max-height: 300px;
+  overflow: auto;
+}
+
+.palette li {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.palette li:hover {
+  background: var(--color-panel-2);
+}
+
+.status {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  color: var(--color-muted);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
