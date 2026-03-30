@@ -369,13 +369,6 @@ export function WritingStudio() {
         <button onClick={() => setShowLines((value) => !value)}>Line #</button>
         <button onClick={() => setPreviewVisible(!previewVisible)}>Preview</button>
       </div>
-      {ghostText && (
-        <div className="suggestion-banner" role="status" aria-live="polite">
-          <strong>AI Suggestion:</strong> {ghostText}
-          <span className="suggestion-hint">Press Tab to accept</span>
-        </div>
-      )}
-
       {findOpen && (
         <div className="find-panel">
           <input value={findTerm} onChange={(event) => setFindTerm(event.target.value)} placeholder="Find..." />
@@ -405,6 +398,12 @@ export function WritingStudio() {
             )}
             <div className="editor-stack">
               <pre className="syntax-layer" aria-hidden dangerouslySetInnerHTML={{ __html: highlightMarkdown(activeDoc.content || " ") }} />
+              {ghostText && activeDoc.selection.start === activeDoc.selection.end && (
+                <pre className="ghost-inline-layer" aria-hidden>
+                  <span className="ghost-hidden-text">{activeDoc.content.slice(0, activeDoc.selection.start)}</span>
+                  <span className="ghost-inline">{ghostText}</span>
+                </pre>
+              )}
               <textarea
                 ref={textareaRef}
                 aria-label="Writing editor"
@@ -427,11 +426,6 @@ export function WritingStudio() {
                   updateSelection(activeDoc.id, { start: target.selectionStart, end: target.selectionEnd });
                 }}
               />
-              {ghostText && (
-                <div className="ghost">
-                  {ghostText}
-                </div>
-              )}
             </div>
           </div>
         </section>

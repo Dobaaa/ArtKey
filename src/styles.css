@@ -76,8 +76,7 @@ textarea {
 
 .tabs,
 .toolbar,
-.find-panel,
-.suggestion-banner {
+.find-panel {
   display: flex;
   gap: var(--space-2);
   align-items: center;
@@ -141,18 +140,6 @@ textarea {
   background: var(--color-panel);
 }
 
-.suggestion-banner {
-  justify-content: space-between;
-  gap: var(--space-3);
-  color: var(--color-text);
-  border-style: dashed;
-}
-
-.suggestion-hint {
-  color: var(--color-muted);
-  font-size: 12px;
-}
-
 .pane-wrap {
   flex: 1;
   display: flex;
@@ -202,7 +189,8 @@ textarea {
 }
 
 .editor-stack textarea,
-.editor-stack .syntax-layer {
+.editor-stack .syntax-layer,
+.editor-stack .ghost-inline-layer {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -233,6 +221,21 @@ textarea {
   color: var(--color-text);
 }
 
+.editor-stack .ghost-inline-layer {
+  z-index: 3;
+  pointer-events: none;
+  color: transparent;
+}
+
+.ghost-hidden-text {
+  color: transparent;
+}
+
+.ghost-inline {
+  color: color-mix(in srgb, var(--color-text) 35%, transparent);
+  animation: fade-in 120ms ease;
+}
+
 .md-heading {
   color: var(--color-heading);
   font-weight: 700;
@@ -256,20 +259,6 @@ textarea {
 
 .md-quote {
   color: var(--color-quote);
-}
-
-.ghost {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  max-width: calc(100% - 24px);
-  color: color-mix(in srgb, var(--color-text) 55%, transparent);
-  background: color-mix(in srgb, var(--color-panel) 80%, transparent);
-  border-radius: 6px;
-  padding: 4px 6px;
-  z-index: 3;
-  animation: fade-in 180ms ease;
-  pointer-events: none;
 }
 
 .preview-pane {
